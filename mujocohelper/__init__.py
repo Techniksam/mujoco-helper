@@ -1,1 +1,1 @@
-from mujocohelper.visualization.plot_renderer import PlotRenderer
+from mujocohelper.plot_renderer import PlotRenderer

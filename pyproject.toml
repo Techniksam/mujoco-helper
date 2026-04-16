@@ -1,0 +1,19 @@
+[project]
+name = "mujoco-helper"
+version = "0.0.1"
+authors = [
+  { name="Samuel Galla", email="galla.samuel@icloud.com" },
+]
+description = "A package including modules to ease the use of mujoco."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E"]
+
+[project.urls]
+Homepage = "https://github.com/Techniksam/mujoco-helper"
+Issues = "https://github.com/Techniksam/mujoco-helper/issues"

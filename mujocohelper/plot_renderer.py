@@ -84,6 +84,21 @@ class PlotRenderer(mujoco.Renderer):
         # convert the frame from RGB to BGR format for OpenCV and write to video
         self.video_writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
     
+    def render(self) -> None:
+        """Renders the scene to the video writer.
+
+        Raises:
+        RuntimeError: If the video writer has not been initialized.
+        """
+
+        if self.video_writer is None:
+            raise RuntimeError("Video writer not initialized. Call init_video() before rendering frames.")
+
+        frame = super().render()
+
+        # convert the frame from RGB to BGR format for OpenCV and write to video
+        self.video_writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+    
     def __exit__(self, exc_type, exc, tb):
         if self.video_writer is not None:
             self.video_writer.release()

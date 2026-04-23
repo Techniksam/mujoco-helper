@@ -22,18 +22,6 @@ Install a specific tag or branch:
 pip install "git+https://github.com/Techniksam/mujocohelper.git@v0.1.0"
 ```
 
-Install locally for development:
-
-```bash
-pip install -e .
-```
-
-Install development tooling:
-
-```bash
-pip install -e .[dev]
-```
-
 ## Quick Start
 
 ```python

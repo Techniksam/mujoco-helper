@@ -1,28 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "mujocohelper"
-version = "0.0.1"
+description = "Mujoco Helper Methods"
+version = "0.1.0"
 authors = [
   { name="Samuel Galla", email="galla.samuel@icloud.com" },
 ]
-description = "A package including modules to ease the use of mujoco."
-readme = "README.md"
-requires-python = ">=3.9"
-dependencies = [
-    "numpy",
-    "matplotlib",
-    "opencv-python-headless",
-    "mujoco",
-]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
+requires-python = ">=3.10"
+readme = "readme.md"
 license = "MIT"
 license-files = ["LICEN[CS]E"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "opencv-python-headless",
+    "mujoco==3.6.0",
+    "numpy",
+    "pyopengl",
+    "matplotlib",
+]
 
 [project.urls]
-Homepage = "https://github.com/Techniksam/mujocohelper"
+Repository = "https://github.com/Techniksam/mujocohelper"
 Issues = "https://github.com/Techniksam/mujocohelper/issues"
 
+[project.optional-dependencies]
+dev = [
+  "build>=1.2.2",
+  "pytest>=8.3",
+  "twine>=5.1",
+]
+
 [tool.setuptools]
-packages = ["mujocohelper"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mujocohelper*"]
+
+[tool.setuptools.package-data]
+mujocohelper = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

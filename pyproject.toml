@@ -7,6 +7,12 @@ authors = [
 description = "A package including modules to ease the use of mujoco."
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "opencv-python-headless",
+    "mujoco",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",

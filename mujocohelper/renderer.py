@@ -6,28 +6,30 @@ import cv2
 
 import numpy as np
 
-class PlotRenderer(mujoco.Renderer):
+class Renderer(mujoco.Renderer):
+    """Render Mujoco scenes and optionally overlay Matplotlib plots, and record videos using OpenCV."""
+    
     def __init__(self,
-                 model: mujoco.MjModel,
+                 model: mujoco.MjModel, # type: ignore
                  height: int = 240,
                  width: int = 320,
                  max_geom: int = 10000,
-                 font_scale: mujoco.mjtFontScale = mujoco.mjtFontScale.mjFONTSCALE_150,
+                 font_scale: mujoco.mjtFontScale = mujoco.mjtFontScale.mjFONTSCALE_150, # type: ignore
                  ) -> None:
-        """Initializes a new `PlotRenderer`.
+        """Initializes a new `Renderer`.
 
         Args:
-        model: an MjModel instance.
-        height: image height in pixels.
-        width: image width in pixels.
-        max_geom: Optional integer specifying the maximum number of geoms that can
-            be rendered in the same scene. If None this will be chosen automatically
-            based on the estimated maximum number of renderable geoms in the model.
-        font_scale: Optional enum specifying the font scale for text.
+            model (mujoco.MjModel): an MjModel instance.
+            height (int): image height in pixels.
+            width (int): image width in pixels.
+            max_geom (int): Optional integer specifying the maximum number of geoms that can
+                be rendered in the same scene. If None this will be chosen automatically
+                based on the estimated maximum number of renderable geoms in the model.
+            font_scale (mujoco.mjtFontScale): Optional enum specifying the font scale for text.
 
         Raises:
-        ValueError: If `camera_id` is outside the valid range, or if `width` or
-            `height` exceed the dimensions of MuJoCo's offscreen framebuffer.
+            ValueError: If `camera_id` is outside the valid range, or if `width` or `height` 
+                exceed the dimensions of MuJoCo's offscreen framebuffer.
         """
         super().__init__(model, height, width, max_geom, font_scale)
 
@@ -45,7 +47,7 @@ class PlotRenderer(mujoco.Renderer):
         """
         self.video_writer = cv2.VideoWriter(
             filename=filename,
-            fourcc=cv2.VideoWriter_fourcc(*'mp4v'),
+            fourcc=cv2.VideoWriter_fourcc(*'mp4v'), # type: ignore
             fps=framerate,
             frameSize=(self.width, self.height)
         )
@@ -58,13 +60,18 @@ class PlotRenderer(mujoco.Renderer):
         """Renders a frame with the given plot overlaid at the specified position and size.
 
         Args:
-        fig: The Matplotlib figure containing the plot to overlay.
-        pos: The position where the plot will be overlaid (top-left corner).
-        size: The size of the area where the plot will be overlaid.
+            fig (matplotlib.figure.Figure): The Matplotlib figure containing the plot to overlay.
+            pos (tuple[int, int]): The position where the plot will be overlaid (top-left corner).
+            size (tuple[int, int]): The size of the area where the plot will be overlaid.
 
         Raises:
-        RuntimeError: If the video writer has not been initialized.
+            ValueError: If the position and size of the plot are not within the bounds of the video frame.
+            RuntimeError: If the video writer has not been initialized.
         """
+
+        # check pos and size are within the bounds of the video frame
+        if pos[0] < 0 or pos[1] < 0 or pos[0] + size[0] > self.width or pos[1] + size[1] > self.height:
+            raise ValueError("Position and size of the plot must be within the bounds of the video frame.")
 
         if self.video_writer is None:
             raise RuntimeError("Video writer not initialized. Call init_video() before rendering frames.")
@@ -72,7 +79,7 @@ class PlotRenderer(mujoco.Renderer):
         frame = super().render()
 
         # capture the plot as an image
-        rgba, (w, h) = fig.canvas.print_to_buffer()
+        rgba, (w, h) = fig.canvas.print_to_buffer() # type: ignore
         img = np.frombuffer(rgba, dtype=np.uint8).reshape((h, w, 4))
 
         # resize the plot to fit in the top left corner of the video frame
@@ -84,11 +91,11 @@ class PlotRenderer(mujoco.Renderer):
         # convert the frame from RGB to BGR format for OpenCV and write to video
         self.video_writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
     
-    def render(self) -> None:
-        """Renders the scene to the video writer.
+    def render_frame(self) -> None:
+        """Renders the scene and writes it to the video writer if initialized.
 
         Raises:
-        RuntimeError: If the video writer has not been initialized.
+            RuntimeError: If the video writer has not been initialized.
         """
 
         if self.video_writer is None:

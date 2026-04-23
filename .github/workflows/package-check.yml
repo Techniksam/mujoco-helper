@@ -30,8 +30,8 @@ jobs:
       - name: Run tests
         run: python -m pytest
 
-      - name: Build distributions
-        run: python -m build
-
-      - name: Validate distribution metadata
-        run: python -m twine check dist/*
+      - name: Verify install from git link
+        run: |
+          python -m pip uninstall -y mujocohelper || true
+          python -m pip install "git+file://$GITHUB_WORKSPACE"
+          python -c "import mujocohelper; print(mujocohelper.__version__)"

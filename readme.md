@@ -10,10 +10,16 @@ Utility helpers for MuJoCo simulations in Python.
 
 ## Installation
 
-Install from PyPI:
+Install directly from the repository via pip + git:
 
 ```bash
-pip install mujocohelper
+pip install "git+https://github.com/Techniksam/mujocohelper.git"
+```
+
+Install a specific tag or branch:
+
+```bash
+pip install "git+https://github.com/Techniksam/mujocohelper.git@v0.1.0"
 ```
 
 Install locally for development:
@@ -46,17 +52,10 @@ with Renderer(model, height=480, width=640) as renderer:
         renderer.render_frame()
 ```
 
-## Build Distributions
+## CI Workflows
 
-```bash
-python -m build
-```
-
-Validate package metadata before publishing:
-
-```bash
-python -m twine check dist/*
-```
+- `package-check.yml` runs tests and verifies installation through a git URL.
+- `git-install-release-check.yml` validates that the release tag is installable via pip from GitHub.
 
 Run tests:
 

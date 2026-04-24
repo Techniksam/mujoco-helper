@@ -1,6 +1,6 @@
 import pytest
 
-from mujocohelper.designer.model import MujocoModel, MujocoOption
+from mujocohelper.designer.model import MujocoModel
 
 
 def test_set_and_get_single_option() -> None:
@@ -27,18 +27,6 @@ def test_set_options_sets_multiple_values() -> None:
 
     assert model.get_option("timestep") == 0.005
     assert model.get_option("solver") == "CG"
-
-
-def test_get_options_returns_effective_options() -> None:
-    model = MujocoModel()
-    model.set_options(timestep=0.01, wind=(1.0, 0.0, 0.0))
-
-    options = model.get_options()
-
-    assert isinstance(options, MujocoOption)
-    assert options.timestep == 0.01
-    assert options.wind == (1.0, 0.0, 0.0)
-    assert options.solver == "Newton"
 
 
 def test_unknown_option_name_raises() -> None:

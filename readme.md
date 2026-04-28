@@ -40,17 +40,6 @@ with Renderer(model, height=480, width=640) as renderer:
         renderer.render_frame()
 ```
 
-## CI Workflows
-
-- `package-check.yml` runs tests and verifies installation through a git URL.
-- `git-install-release-check.yml` validates that the release tag is installable via pip from GitHub.
-
-Run tests:
-
-```bash
-pytest
-```
-
 ## License
 
 MIT. See `LICENSE`.

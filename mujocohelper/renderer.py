@@ -45,6 +45,9 @@ class Renderer(mujoco.Renderer):
         filename: The name of the output video file.
         framerate: The frame rate for the video.
         """
+        if self.video_writer is not None:
+            self.video_writer.release()
+        
         self.video_writer = cv2.VideoWriter(
             filename=filename,
             fourcc=cv2.VideoWriter_fourcc(*'mp4v'), # type: ignore
